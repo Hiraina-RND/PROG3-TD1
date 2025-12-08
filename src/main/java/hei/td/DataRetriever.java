@@ -71,21 +71,30 @@ public class DataRetriever {
     public List<Product> getProductList(int page, int size) throws SQLException {
         List<Product> allProducts = new ArrayList<>();
 
-        String sql = "SELECT * FROM product;";
+        String sql = "SELECT * FROM product LIMIT ? OFFSET ?;";
         try (Connection connection = DBConnection.getDBConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet resultSet = ps.executeQuery()) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
+            ps.setInt(1, size);
+            ps.setInt(2, (page - 1) * size);
 
-            while (resultSet.next()) {
-                allProducts.addAll(mapToProducts(resultSet));
+            try (ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next()) {
+                    allProducts.addAll(mapToProducts(resultSet));
+                }
             }
         }
 
-        return allProducts
-                .stream()
-                .skip((long) (page - 1) * size)
-                .limit(size)
-                .toList();
+        return allProducts;
+    }
+
+    static void main(String[] args) throws SQLException {
+        DataRetriever retriever = new DataRetriever();
+
+        List<Product> products = retriever.getProductList(1, 2);
+
+        for (Product product : products) {
+            System.out.println("ID: " + product.getId() + "|" + "NAME: " + product.getName() + "|" + "Category Name: " + product.getCategoryName());
+        }
     }
 }
