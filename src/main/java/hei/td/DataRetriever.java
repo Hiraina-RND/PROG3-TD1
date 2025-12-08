@@ -87,14 +87,4 @@ public class DataRetriever {
 
         return allProducts;
     }
-
-    static void main(String[] args) throws SQLException {
-        DataRetriever retriever = new DataRetriever();
-
-        List<Product> products = retriever.getProductList(1, 2);
-
-        for (Product product : products) {
-            System.out.println("ID: " + product.getId() + "|" + "NAME: " + product.getName() + "|" + "Category Name: " + product.getCategoryName());
-        }
-    }
 }
