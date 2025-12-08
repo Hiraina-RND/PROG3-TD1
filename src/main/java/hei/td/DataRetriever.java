@@ -33,8 +33,14 @@ public class DataRetriever {
     private List<Category> findProductCategoriesByProductId(int productId) throws SQLException {
         List<Category> categories = new ArrayList<>();
 
+        DBConnection dbConnection = new DBConnection(
+                "jdbc:postgresql://localhost:5432/product_management_db",
+                "product_manager_user",
+                "123456"
+        );
+
         try (
-                Connection connection = DBConnection.getDBConnection();
+                Connection connection = dbConnection.getDBConnection();
                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM product_category WHERE product_id = ?");
         ) {
             ps.setInt(1, productId);
@@ -52,8 +58,14 @@ public class DataRetriever {
     public List<Category> getAllCategories() throws SQLException {
         List<Category> categories = new ArrayList<>();
 
+        DBConnection dbConnection = new DBConnection(
+                "jdbc:postgresql://localhost:5432/product_management_db",
+                "product_manager_user",
+                "123456"
+        );
+
         try (
-                Connection connection = DBConnection.getDBConnection();
+                Connection connection = dbConnection.getDBConnection();
                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM product_category;");
                 ResultSet resultSet = ps.executeQuery()
         ) {
@@ -71,9 +83,17 @@ public class DataRetriever {
     public List<Product> getProductList(int page, int size) throws SQLException {
         List<Product> allProducts = new ArrayList<>();
 
+        DBConnection dbConnection = new DBConnection(
+                "jdbc:postgresql://localhost:5432/product_management_db",
+                "product_manager_user",
+                "123456"
+        );
+
         String sql = "SELECT * FROM product LIMIT ? OFFSET ?;";
-        try (Connection connection = DBConnection.getDBConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = dbConnection.getDBConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
 
             ps.setInt(1, size);
             ps.setInt(2, (page - 1) * size);
