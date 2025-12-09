@@ -277,7 +277,7 @@ public class DataRetriever {
             }
 
             ps.setInt(paramIndex++, size);
-            ps.setInt(paramIndex++, page * size);
+            ps.setInt(paramIndex++, (page - 1) * size);
 
             try (ResultSet resultSet = ps.executeQuery()) {
                 while (resultSet.next()) {
