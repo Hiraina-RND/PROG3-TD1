@@ -90,7 +90,7 @@ public class DataRetriever {
                 "123456"
         );
 
-        String sql = "SELECT p.id, p.name, p.creation_datetime FROM product LIMIT ? OFFSET ?;";
+        String sql = "SELECT p.id, p.name, p.creation_datetime FROM product p LIMIT ? OFFSET ?;";
         try (
                 Connection connection = dbConnection.getDBConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
