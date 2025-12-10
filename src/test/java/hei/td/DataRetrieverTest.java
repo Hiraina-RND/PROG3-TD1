@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,20 +33,10 @@ class DataRetrieverTest {
             List<Product> productsPage5 = dataRetriever.getProductList(1, 5);
             List<Product> productsPage2 = dataRetriever.getProductList(1, 2);
 
-            List<Integer> realListOfProduct = new ArrayList<>();
-
-            for (Product product : productsPage5) {
-                realListOfProduct.add(product.getId());
-            }
-
-            realListOfProduct = realListOfProduct
-                    .stream()
-                    .distinct()
-                    .toList();
 
             assertNotNull(productsPage5);
             assertNotNull(productsPage2);
-            assertEquals(5, realListOfProduct.size());
+            assertEquals(5, productsPage5.size());
             assertTrue(productsPage5.size() >= productsPage2.size(), "More products expected for a larger page");
 
         } catch (SQLException e) {
@@ -74,18 +63,9 @@ class DataRetrieverTest {
     void testProductByCriteriaWithPagination() {
         try {
             List<Product> listOfProducts = dataRetriever.getProductsByCriteria(null, "Info", null, null, 1, 2);
-            List<Integer> realListSize = new ArrayList<>();
 
-            for (Product product : listOfProducts) {
-                realListSize.add(product.getId());
-            }
 
-            realListSize = realListSize
-                    .stream()
-                    .distinct()
-                    .toList();
-
-            assertEquals(2, realListSize.size());
+            assertEquals(2, listOfProducts.size());
         } catch (SQLException e) {
             fail(e.getMessage());
         }

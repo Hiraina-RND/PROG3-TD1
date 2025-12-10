@@ -106,7 +106,10 @@ public class DataRetriever {
             }
         }
 
-        return allProducts;
+        return allProducts
+                .stream()
+                .distinct()
+                .toList();
     }
 
     public List<Product> getProductsByCriteria(String productName, String categoryName, Instant creationMin, Instant creationMax) throws SQLException {
@@ -190,11 +193,23 @@ public class DataRetriever {
                 while (resultSet.next()) {
                     filteredProducts.addAll(mapToProducts(resultSet));
                 }
+
+                if (categoryName != null) {
+                    String normalizedCat = categoryName.trim().toLowerCase();
+
+                    filteredProducts = filteredProducts
+                            .stream()
+                            .filter(product -> product.getCategoryName().toLowerCase().contains(normalizedCat))
+                            .toList();
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error executing query", e);
         }
-        return filteredProducts;
+        return filteredProducts
+                .stream()
+                .distinct()
+                .toList();
     }
 
     List<Product> getProductsByCriteria(String productName, String categoryName, Instant creationMin, Instant creationMax, int page, int size) throws SQLException {
@@ -283,10 +298,22 @@ public class DataRetriever {
                 while (resultSet.next()) {
                     filteredProducts.addAll(mapToProducts(resultSet));
                 }
+
+                if (categoryName != null) {
+                    String normalizedCat = categoryName.trim().toLowerCase();
+
+                    filteredProducts = filteredProducts
+                            .stream()
+                            .filter(product -> product.getCategoryName().toLowerCase().contains(normalizedCat))
+                            .toList();
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error executing query", e);
         }
-        return filteredProducts;
+        return filteredProducts
+                .stream()
+                .distinct()
+                .toList();
     }
 }
