@@ -92,7 +92,7 @@ public class Main {
 
         System.out.println("");
 
-        dataRetriever.getProductsByCriteria(null, "Audio", Instant.parse("2024-01-01T00:00:00Z"), Instant.parse("2024-01-01T00:00:00Z"))
+        dataRetriever.getProductsByCriteria(null, "Audio", Instant.parse("2024-01-01T00:00:00Z"), Instant.parse("2024-12-01T00:00:00Z"))
                 .forEach(product -> {
                     System.out.println("ID: " + product.getId() + " | " + "NAME: " + product.getName() + " | " + "CREATION DATE: " + product.getCreationDateTime() + " | " + "CATEGORY NAME: " + product.getCategoryName());
                 });
